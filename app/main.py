@@ -7,13 +7,13 @@ from datetime import datetime
 
 while True:
     plate, owner = read_plate()
-    speed = random.randint(80, 320)
+    speed = random.randint(80, 160)
     limit = 100
     location = "Dummy Expressway 1"
     time_now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     if is_speeding(speed, limit):
-        data = {
+        violation = {
             "plate": plate,
             "owner": owner["name"],
             "speed": speed,
@@ -22,7 +22,7 @@ while True:
             "time": time_now,
             "paid": False
         }
-        add_violation(data)
+        add_violation(violation)
 
         officer_msg = f"""SPEEDING VIOLATION ALERT — Vehicle Plate: {plate}
 
@@ -33,10 +33,8 @@ Offense Details:
 - Allowed Limit: {limit} km/h
 - Location: {location}
 - Time: {time_now}
-
-Please take necessary action. A fine notice has been sent to the registered owner.
 """
-        send_email("police@example.com", f"SPEEDING VIOLATION ALERT — {plate}", officer_msg)
+        send_email("police@example.com", f"SPEEDING ALERT — {plate}", officer_msg)
 
         owner_msg = f"""Notice of Speed Violation — Plate: {plate}
 
@@ -46,17 +44,11 @@ Our system detected your vehicle exceeding the speed limit.
 
 - Speed: {speed} km/h
 - Allowed Limit: {limit} km/h
-- Fine: $2.2B
-
-Please visit the SpeedPass portal to view details and complete payment.
-
-[Dummy Link to Pay Fine]
-
-Failure to pay within 7 days may result in further action.
+- Fine: $100
 """
         send_email(owner["email"], f"Notice of Speed Violation — {plate}", owner_msg)
-        print(f"[ALERT] {plate} - Speeding at {speed} km/h")
+        print(f"[ALERT] {plate} caught speeding at {speed} km/h")
     else:
-        print(f"[INFO] {plate} within limit at {speed} km/h")
+        print(f"[OK] {plate} within limit at {speed} km/h")
 
     input("Press Enter to simulate next car...")
