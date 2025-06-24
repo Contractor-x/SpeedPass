@@ -6,32 +6,27 @@ from datetime import datetime
 
 st.title("🚦 SpeedPass Lite - Traffic Monitoring Dashboard")
 
-# Show record capacity
 st.info(f"Total Registered Vehicles: {len(owners)}")
 st.info(f"Total Violations Recorded: {len(get_violations())}")
 
-# Violation Statistics
 violations = get_violations()
 if violations:
     df = pd.DataFrame(violations)
-    
     st.subheader("📊 Violations by Plate")
     fig = px.histogram(df, x="plate", title="Number of Violations per Plate")
     st.plotly_chart(fig)
-    
+
     st.subheader("📋 Violation Records")
     st.dataframe(df)
 else:
     st.info("No violations recorded yet.")
 
-# Payment Section
 st.subheader("💳 Pay Fine")
 plate = st.text_input("Enter Plate Number to Pay Fine:")
 if st.button("Pay Fine"):
     mark_fine_paid(plate)
     st.success(f"Fine marked as paid for {plate}")
 
-# Add New Driver + Auto Violation
 st.sidebar.title("🚗 Add New Driver (Auto Violation)")
 new_plate = st.sidebar.text_input("Plate Number")
 driver_id = st.sidebar.text_input("Driver ID")
