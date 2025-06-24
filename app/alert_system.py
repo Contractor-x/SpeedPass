@@ -1,12 +1,8 @@
-import os
 import smtplib
 from email.mime.text import MIMEText
-from dotenv import load_dotenv
 
-load_dotenv()
-
-EMAIL = os.getenv("EMAIL")
-PASSWORD = os.getenv("EMAIL_PASSWORD")
+EMAIL = "youremail@gmail.com"
+PASSWORD = "yourpassword"
 
 def send_email(to, subject, body):
     msg = MIMEText(body)
@@ -14,7 +10,5 @@ def send_email(to, subject, body):
     msg["From"] = EMAIL
     msg["To"] = to
 
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-        server.login(EMAIL, PASSWORD)
-        server.send_message(msg)
-
+    # Dummy email print for school demo (disable actual send)
+    print(f"[DUMMY EMAIL] To: {to}, Subject: {subject}\n{body}\n")
