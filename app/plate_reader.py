@@ -1,8 +1,7 @@
 import random
-from driver_manager import drivers, get_driver
+from database import owners, get_owner
 
 def read_plate():
-    plate = random.choice(list(drivers.keys()))
-    owner = get_driver(plate)
+    plate = random.choice(list(owners.keys()))
+    owner = get_owner(plate)
     return plate, owner
-
