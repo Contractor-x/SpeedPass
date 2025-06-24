@@ -1,11 +1,10 @@
+
 import json
 import os
 
-# Dummy "database" files
-DRIVER_FILE = "drivers.json"
-VIOLATION_FILE = "violations.json"
+DRIVER_FILE = os.path.join(os.path.dirname(__file__), "drivers.json")
+VIOLATION_FILE = os.path.join(os.path.dirname(__file__), "violations.json")
 
-# Load existing data or start empty
 if os.path.exists(DRIVER_FILE):
     with open(DRIVER_FILE) as f:
         owners = json.load(f)
@@ -20,9 +19,9 @@ else:
 
 def save_data():
     with open(DRIVER_FILE, "w") as f:
-        json.dump(owners, f)
+        json.dump(owners, f, indent=4)
     with open(VIOLATION_FILE, "w") as f:
-        json.dump(violations, f)
+        json.dump(violations, f, indent=4)
 
 def add_owner(plate, driver_id, name, email):
     owners[plate] = {"id": driver_id, "email": email, "name": name}
