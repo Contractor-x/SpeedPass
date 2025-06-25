@@ -8,18 +8,20 @@ VIOLATION_FILE = os.path.join(os.path.dirname(__file__), "violations.json")
 owners = {}
 if os.path.exists(DRIVER_FILE):
     with open(DRIVER_FILE) as f:
-        owners = json.load(f)
+        loaded_owners = json.load(f)
         # Auto-convert list to dict if needed
-        if isinstance(owners, list):
-            # Convert old list format to dict format automatically
+        if isinstance(loaded_owners, list):
+            # Use "Driver ID" as the plate key
             owners = {
-                item["plate"]: {
-                    "id": item.get("driver_id", item.get("id", "")),
+                item["Driver ID"]: {
+                    "id": item.get("Driver ID", ""),  # Use Driver ID as id
                     "email": item.get("email", ""),
                     "name": item.get("name", "")
                 }
-                for item in owners if "plate" in item
+                for item in loaded_owners if "Driver ID" in item
             }
+        elif isinstance(loaded_owners, dict):
+            owners = loaded_owners
 else:
     owners = {}
 
