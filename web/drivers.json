@@ -1,1 +1,14 @@
-
+[
+  {
+    "plate": "464868464",
+    "driver_id": "KODER",
+    "name": "STEPHEN",
+    "email": "KODER@gmail.com"
+  },
+  {
+    "plate": "999666999",
+    "driver_id": "CONTRACTOR",
+    "name": "Bob",
+    "email": "bob@email.com"
+  }
+]
