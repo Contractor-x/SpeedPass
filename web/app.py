@@ -35,7 +35,6 @@ name = st.sidebar.text_input("Driver Name")
 email = st.sidebar.text_input("Email Address")
 
 if st.sidebar.button("Add Driver"):
-    # Prevent double insert by checking if plate already exists in owners
 if any(owner['plate'] == new_plate for owner in owners):
     st.sidebar.warning(f"Driver with plate {new_plate} already exists.")
 else:
