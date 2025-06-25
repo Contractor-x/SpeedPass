@@ -11,14 +11,14 @@ if os.path.exists(DRIVER_FILE):
         # Auto-convert list to dict if needed
         if isinstance(owners, list):
             # Convert old list format to dict format automatically
-            owners = {
-            "plate": item["Driver ID"],
-                    "id": item.get("driver_id", item.get("id", "")),
-                    "email": item["email"],
-                    "name": item["name"]
-                }
-                for item in owners if "plate" in item
-            }
+           owners = {
+    item["plate"]: {
+        "id": item.get("driver_id", item.get("id", "")),
+        "email": item["email"],
+        "name": item["name"]
+    }
+    for item in owners if "plate" in item
+}
 else:
     owners = {}
 
