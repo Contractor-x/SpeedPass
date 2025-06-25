@@ -35,10 +35,7 @@ name = st.sidebar.text_input("Driver Name")
 email = st.sidebar.text_input("Email Address")
 
 if st.sidebar.button("Add Driver"):
-    if any(owner['plate'] == new_plate for owner in owners):
-        st.sidebar.warning(f"Driver with plate {new_plate} already exists.")
-    else:
-    add_owner(new_plate, driver_id, name, email)
+    add_owner(new_plate, driver_id, name, email
     speed = random.randint(80, 420)
     locations = [
         "Dummy Expressway 1",
