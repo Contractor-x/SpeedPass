@@ -8,20 +8,30 @@ from datetime import datetime
 
 st.title("🚦 SpeedPass - Traffic Monitoring Dashboard")
 
-# Load drivers data
+# Load drivers data (list or dict)
 with open("web/drivers.json") as f:
     drivers = json.load(f)
 
+# Normalize drivers as list of dicts for DataFrame
+if isinstance(drivers, dict):
+    drivers_list = [
+        {"Driver ID": k, "id": v.get("id", ""), "email": v.get("email", ""), "name": v.get("name", "")}
+        for k, v in drivers.items()
+    ]
+elif isinstance(drivers, list):
+    drivers_list = drivers
+else:
+    drivers_list = []
+
 # Display info
-st.info(f"Total Registered Vehicles: {len(drivers)}")
+st.info(f"Total Registered Vehicles: {len(drivers_list)}")
 st.info(f"Total Violations Recorded: {len(get_violations())}")
 
 # === Registered Drivers Section ===
 st.subheader("👥 Registered Drivers")
 
-drivers_df = pd.DataFrame(drivers)
+drivers_df = pd.DataFrame(drivers_list)
 
-# Only use columns that exist
 display_names = {
     "Driver ID": "Plate/Driver ID",
     "name": "Full Name",
@@ -30,7 +40,7 @@ display_names = {
 }
 existing_cols = [k for k in display_names if k in drivers_df.columns]
 
-if existing_cols:
+if existing_cols and not drivers_df.empty:
     drivers_df_display = drivers_df[existing_cols].rename(columns={k: v for k, v in display_names.items() if k in existing_cols})
     st.dataframe(drivers_df_display, use_container_width=True, height=400)
 else:
