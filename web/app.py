@@ -71,4 +71,11 @@ if st.sidebar.button("Add Driver"):
     }
     add_violation(violation)
     st.sidebar.success(f"Driver {name} added with automatic violation.")
-    
+
+def add_violation(data, fine=None):
+    # Set fine to a random amount between 10,000 and 30,000 if not provided
+    if fine is None:
+        fine = random.randint(2000, 10000000)
+    data["fine"] = fine
+    violations.append(data)
+    save_data()
