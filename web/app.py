@@ -6,58 +6,6 @@ import plotly.express as px
 from database import get_violations, owners, mark_fine_paid, add_owner, add_violation
 from datetime import datetime
 
-# ---- Cyberpunk CSS ----
-st.markdown("""
-<style>
-body {
-    background: linear-gradient(120deg, #000428, #004e92 100%);
-}
-[data-testid="stAppViewContainer"], .stApp {
-    background: linear-gradient(120deg, #0f2027 0%, #2c5364 100%);
-}
-.cyberpunk-table {
-    border-radius: 8px;
-    overflow: hidden;
-    background: rgba(10,10,30,0.97);
-    color: #d4fc79;
-    box-shadow: 0 0 30px #00ffe7, 0 0 10px #ff00cc;
-}
-.cyberpunk-card {
-    border-radius: 18px;
-    padding: 20px 24px;
-    margin-bottom: 20px;
-    background: linear-gradient(135deg, #161a26 0%, #300048 100%);
-    color: #d4fc79;
-    border: 2px solid #00ffe7;
-    box-shadow: 0 0 15px #00ffe7, 0 0 2px #ff00cc;
-    transition: transform .2s, box-shadow .2s;
-}
-.cyberpunk-card:hover {
-    transform: scale(1.025);
-    box-shadow: 0 0 32px #ff00cc, 0 0 8px #00ffe7;
-    border-color: #ff00cc;
-}
-.cyberpunk-label {
-    font-weight: 700;
-    color: #00ffe7;
-    letter-spacing: 1px;
-    margin-right: 4px;
-}
-a, a:visited {
-    color: #ff00cc;
-    text-decoration: none;
-}
-a:hover {
-    color: #00ffe7;
-    text-shadow: 0 0 8px #ff00cc;
-}
-h1, h2, h3, .stTitle {
-    color: #fff;
-    text-shadow: 0 0 10px #00ffe7, 0 0 4px #ff00cc;
-}
-</style>
-""", unsafe_allow_html=True)
-
 st.title("🚦 SpeedPass - Traffic Monitoring Dashboard")
 
 # Load drivers data
@@ -69,6 +17,7 @@ st.info(f"Total Violations Recorded: {len(get_violations())}")
 # === Registered Drivers Section ===
 st.subheader("👥 Registered Drivers")
 
+# Show as a beautiful interactive table
 drivers_df = pd.DataFrame(drivers)
 drivers_df = drivers_df.rename(columns={
     "Driver ID": "Plate/Driver ID",
@@ -77,25 +26,21 @@ drivers_df = drivers_df.rename(columns={
     "email": "Email"
 })
 
-# Cyberpunk style DataFrame
-st.markdown('<div class="cyberpunk-table">', unsafe_allow_html=True)
 st.dataframe(
     drivers_df[["Plate/Driver ID", "Full Name", "Short Name", "Email"]],
     use_container_width=True,
     height=400
 )
-st.markdown('</div>', unsafe_allow_html=True)
 
-# Card-based cyberpunk details
-with st.expander("🟣 Show All Driver Details as Cyberpunk Cards"):
+with st.expander("Show All Driver Details as Cards"):
     for i, row in drivers_df.iterrows():
         st.markdown(
             f"""
-            <div class="cyberpunk-card">
-                <span class="cyberpunk-label">Plate/Driver ID:</span> {row['Plate/Driver ID']}<br>
-                <span class="cyberpunk-label">Full Name:</span> {row['Full Name']}<br>
-                <span class="cyberpunk-label">Short Name:</span> {row['Short Name']}<br>
-                <span class="cyberpunk-label">Email:</span> <a href="mailto:{row['Email']}">{row['Email']}</a>
+            <div style="border:1px solid #eee; border-radius:10px; padding:10px; margin-bottom:10px; background: #fafbfc;">
+                <b>Plate/Driver ID:</b> {row['Plate/Driver ID']}<br>
+                <b>Full Name:</b> {row['Full Name']}<br>
+                <b>Short Name:</b> {row['Short Name']}<br>
+                <b>Email:</b> <a href="mailto:{row['Email']}">{row['Email']}</a>
             </div>
             """,
             unsafe_allow_html=True
@@ -106,11 +51,10 @@ violations = get_violations()
 if violations:
     df = pd.DataFrame(violations)
     st.subheader("📊 Violations by Plate")
-    fig = px.histogram(df, x="plate", title="Number of Violations per Plate",
-                       color_discrete_sequence=["#ff00cc"])
+    fig = px.histogram(df, x="plate", title="Number of Violations per Plate")
     st.plotly_chart(fig)
     st.subheader("📋 Violation Records")
-    st.dataframe(df, use_container_width=True)
+    st.dataframe(df)
 else:
     st.info("No violations recorded yet.")
 
