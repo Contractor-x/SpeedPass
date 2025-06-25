@@ -40,9 +40,8 @@ if st.sidebar.button("Add Driver"):
     st.sidebar.warning(f"Driver with plate {new_plate} already exists.")
 else:
     add_owner(new_plate, driver_id, name, email)
-    
-        speed = random.randint(80, 420)  # Adjust the range as needed
-        locations = [
+    speed = random.randint(80, 420)  # Adjust the range as needed
+    locations = [
             "Dummy Expressway 1",
             "Main Avenue",
             "Sunset Boulevard",
