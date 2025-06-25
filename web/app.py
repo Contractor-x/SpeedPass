@@ -1,4 +1,5 @@
 import json
+import os
 import random
 import streamlit as st
 import pandas as pd
@@ -8,9 +9,17 @@ from datetime import datetime
 
 st.title("🚦 SpeedPass - Traffic Monitoring Dashboard")
 
-# Load drivers data (list or dict)
-with open("web/drivers.json") as f:
-    drivers = json.load(f)
+DRIVER_FILE = "web/drivers.json"
+
+# Load drivers data (list or dict), always create a blank space if empty/bad/missing
+if not os.path.exists(DRIVER_FILE) or os.stat(DRIVER_FILE).st_size == 0:
+    drivers = []
+else:
+    try:
+        with open(DRIVER_FILE) as f:
+            drivers = json.load(f)
+    except Exception:
+        drivers = []
 
 # Normalize drivers as list of dicts for DataFrame
 if isinstance(drivers, dict):
@@ -81,6 +90,33 @@ name = st.sidebar.text_input("Driver Name")
 email = st.sidebar.text_input("Email Address")
 
 if st.sidebar.button("Add Driver"):
+    # Defensive: Always load, repair, and save as a dict with Driver ID as key (for your DB logic)
+    try:
+        with open(DRIVER_FILE) as f:
+            loaded = json.load(f)
+    except Exception:
+        loaded = {}
+
+    if isinstance(loaded, list):
+        # Convert list to dict using Driver ID as key if possible
+        loaded_dict = {}
+        for item in loaded:
+            key = item.get("Driver ID", new_plate)
+            loaded_dict[key] = {
+                "id": item.get("id", ""),
+                "email": item.get("email", ""),
+                "name": item.get("name", "")
+            }
+        loaded = loaded_dict
+
+    if not isinstance(loaded, dict):
+        loaded = {}
+
+    loaded[new_plate] = {"id": driver_id, "email": email, "name": name}
+
+    with open(DRIVER_FILE, "w") as f:
+        json.dump(loaded, f, indent=4)
+
     add_owner(new_plate, driver_id, name, email)
     speed = random.randint(80, 420)
     locations = [
