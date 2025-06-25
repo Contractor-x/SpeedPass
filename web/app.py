@@ -71,4 +71,4 @@ if st.sidebar.button("Add Driver"):
     }
     add_violation(violation)
     st.sidebar.success(f"Driver {name} added with automatic violation.")
-    st.experimental_rerun()
+    
