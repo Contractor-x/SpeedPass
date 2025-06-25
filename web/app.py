@@ -1,3 +1,4 @@
+import random
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -21,7 +22,7 @@ else:
     st.info("No violations recorded yet.")
 
 st.subheader("💳 Pay Fine")
-plate = st.text_input("Enter Plate Number to Pay Fine:")
+plate = st.text_input("Enter Driver ID to Pay Fine:")
 if st.button("Pay Fine"):
     mark_fine_paid(plate)
     st.success(f"Fine marked as paid for {plate}")
@@ -34,12 +35,36 @@ email = st.sidebar.text_input("Email Address")
 
 if st.sidebar.button("Add Driver"):
     add_owner(new_plate, driver_id, name, email)
+    speed = random.randint(80, 420)  # Adjust the range as needed
+    locations = [
+    "Dummy Expressway 1",
+    "Main Avenue",
+    "Sunset Boulevard",
+    "Coastal Road",
+    "Greenbelt Parkway",
+    "Maple Street",
+    "Central Highway",
+    "Riverfront Drive",
+    "Mountain Pass",
+    "Lakeside Road",
+    "Industrial Zone Bypass",
+    "Airport Express",
+    "University Loop",
+    "Old Town Road",
+    "Harbor Street",
+    "Forest Trail",
+    "Metro Link",
+    "East End Boulevard",
+    "Westgate Drive",
+    "Downtown Connector"
+]
+    location = random.choice(locations)
     violation = {
         "plate": new_plate,
         "owner": name,
-        "speed": 120,
+        "speed": speed,
         "limit": 100,
-        "location": "Dummy Expressway 1",
+        "location": location,
         "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "paid": False
     }
