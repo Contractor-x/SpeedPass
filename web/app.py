@@ -16,6 +16,34 @@ st.info(f"Total Violations Recorded: {len(get_violations())}")
 
 # === Registered Drivers Section ===
 st.subheader("👥 Registered Drivers")
+display_cols = [c for c in ["Driver ID", "name", "id", "email"] if c in drivers_df.columns]
+display_names = {
+    "Driver ID": "Plate/Driver ID",
+    "name": "Full Name",
+    "id": "Short Name",
+    "email": "Email"
+}
+drivers_df_display = drivers_df[display_cols].rename(columns=display_names)
+
+st.dataframe(
+    drivers_df_display,
+    use_container_width=True,
+    height=400
+)
+
+with st.expander("🟣 Show All Driver Details as Cyberpunk Cards"):
+    for _, row in drivers_df.iterrows():
+        st.markdown(
+            f"""
+            <div class="cyberpunk-card">
+                <span class="cyberpunk-label">Plate/Driver ID:</span> {row.get('Driver ID', '')}<br>
+                <span class="cyberpunk-label">Full Name:</span> {row.get('name', '')}<br>
+                <span class="cyberpunk-label">Short Name:</span> {row.get('id', '')}<br>
+                <span class="cyberpunk-label">Email:</span> <a href="mailto:{row.get('email', '')}">{row.get('email', '')}</a>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
 # Show as a beautiful interactive table
 drivers_df = pd.DataFrame(drivers)
