@@ -11,12 +11,17 @@ st.title("🚦 SpeedPass - Traffic Monitoring Dashboard")
 # Load drivers data
 with open("web/drivers.json") as f:
     drivers = json.load(f)
+
+# Display info
 st.info(f"Total Registered Vehicles: {len(drivers)}")
 st.info(f"Total Violations Recorded: {len(get_violations())}")
 
 # === Registered Drivers Section ===
 st.subheader("👥 Registered Drivers")
-display_cols = [c for c in ["Driver ID", "name", "id", "email"] if c in drivers_df.columns]
+
+# Build DataFrame and display only the columns that exist
+drivers_df = pd.DataFrame(drivers)
+display_cols = [col for col in ["Driver ID", "name", "id", "email"] if col in drivers_df.columns]
 display_names = {
     "Driver ID": "Plate/Driver ID",
     "name": "Full Name",
@@ -31,47 +36,14 @@ st.dataframe(
     height=400
 )
 
-with st.expander("🟣 Show All Driver Details as Cyberpunk Cards"):
+with st.expander("Show All Driver Details"):
     for _, row in drivers_df.iterrows():
-        st.markdown(
-            f"""
-            <div class="cyberpunk-card">
-                <span class="cyberpunk-label">Plate/Driver ID:</span> {row.get('Driver ID', '')}<br>
-                <span class="cyberpunk-label">Full Name:</span> {row.get('name', '')}<br>
-                <span class="cyberpunk-label">Short Name:</span> {row.get('id', '')}<br>
-                <span class="cyberpunk-label">Email:</span> <a href="mailto:{row.get('email', '')}">{row.get('email', '')}</a>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-# Show as a beautiful interactive table
-drivers_df = pd.DataFrame(drivers)
-drivers_df = drivers_df.rename(columns={
-    "Driver ID": "Plate/Driver ID",
-    "id": "Short Name",
-    "name": "Full Name",
-    "email": "Email"
-})
-
-st.dataframe(
-    drivers_df[["Plate/Driver ID", "Full Name", "Short Name", "Email"]],
-    use_container_width=True,
-    height=400
-)
-
-with st.expander("Show All Driver Details as Cards"):
-    for i, row in drivers_df.iterrows():
-        st.markdown(
-            f"""
-            <div style="border:1px solid #eee; border-radius:10px; padding:10px; margin-bottom:10px; background: #fafbfc;">
-                <b>Plate/Driver ID:</b> {row['Plate/Driver ID']}<br>
-                <b>Full Name:</b> {row['Full Name']}<br>
-                <b>Short Name:</b> {row['Short Name']}<br>
-                <b>Email:</b> <a href="mailto:{row['Email']}">{row['Email']}</a>
-            </div>
-            """,
-            unsafe_allow_html=True
+        st.write(
+            f"**Plate/Driver ID:** {row.get('Driver ID', '')}\n\n"
+            f"**Full Name:** {row.get('name', '')}\n\n"
+            f"**Short Name:** {row.get('id', '')}\n\n"
+            f"**Email:** {row.get('email', '')}\n\n"
+            "---"
         )
 
 # === Violations Section ===
@@ -137,7 +109,7 @@ if st.sidebar.button("Add Driver"):
     st.sidebar.success(f"Driver {name} added with automatic violation.")
 
 def add_violation(data, fine=None):
-    # Set fine to a random amount between 10,000 and 30,000 if not provided
+    # Set fine to a random amount between 10,000 and 10,000,000 if not provided
     if fine is None:
         fine = random.randint(2000, 10000000)
     data["fine"] = fine
