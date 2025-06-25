@@ -1,3 +1,4 @@
+import json
 import random
 import streamlit as st
 import pandas as pd
@@ -70,3 +71,14 @@ if st.sidebar.button("Add Driver"):
     }
     add_violation(violation)
     st.sidebar.success(f"Driver {name} added with automatic violation.")
+
+def load_drivers_from_json():
+    with open('drivers.json') as f:
+        drivers = json.load(f)
+    for driver in drivers:
+        # Check if this plate already exists in owners
+        if not any(owner['plate'] == driver['plate'] for owner in owners):
+            add_owner(driver['plate'], driver['driver_id'], driver['name'], driver['email'])
+
+# Call once to populate database at app start (insert after imports, before UI)
+load_drivers_from_json()
