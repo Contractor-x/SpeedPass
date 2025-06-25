@@ -9,30 +9,31 @@ from datetime import datetime
 
 st.title("🚦 SpeedPass - Traffic Monitoring Dashboard")
 
-DRIVER_FILE = "web/drivers.json"
+DRIVER_FILE = "app/drivers.json"  # Correct path if drivers.json is inside app folder
 
-# Load drivers data (list or dict), always create a blank space if empty/bad/missing
-if not os.path.exists(DRIVER_FILE) or os.stat(DRIVER_FILE).st_size == 0:
-    drivers = []
+# Load drivers as dict safely
+if os.path.exists(DRIVER_FILE):
+    with open(DRIVER_FILE) as f:
+        try:
+            drivers_data = json.load(f)
+        except:
+            drivers_data = {}
 else:
-    try:
-        with open(DRIVER_FILE) as f:
-            drivers = json.load(f)
-    except Exception:
-        drivers = []
+    drivers_data = {}
 
-# Normalize drivers as list of dicts for DataFrame
-if isinstance(drivers, dict):
-    drivers_list = [
-        {"Driver ID": k, "id": v.get("id", ""), "email": v.get("email", ""), "name": v.get("name", "")}
-        for k, v in drivers.items()
-    ]
-elif isinstance(drivers, list):
-    drivers_list = drivers
-else:
-    drivers_list = []
+if not isinstance(drivers_data, dict):
+    drivers_data = {}
 
-# Display info
+# Convert dict to list for DataFrame display
+drivers_list = []
+for plate, info in drivers_data.items():
+    drivers_list.append({
+        "Plate": plate,
+        "Driver ID": info.get("id", ""),
+        "Name": info.get("name", ""),
+        "Email": info.get("email", "")
+    })
+
 st.info(f"Total Registered Vehicles: {len(drivers_list)}")
 st.info(f"Total Violations Recorded: {len(get_violations())}")
 
@@ -40,30 +41,18 @@ st.info(f"Total Violations Recorded: {len(get_violations())}")
 st.subheader("👥 Registered Drivers")
 
 drivers_df = pd.DataFrame(drivers_list)
-
-display_names = {
-    "Driver ID": "Plate/Driver ID",
-    "name": "Full Name",
-    "id": "Short Name",
-    "email": "Email"
-}
-existing_cols = [k for k in display_names if k in drivers_df.columns]
-
-if existing_cols and not drivers_df.empty:
-    drivers_df_display = drivers_df[existing_cols].rename(columns={k: v for k, v in display_names.items() if k in existing_cols})
-    st.dataframe(drivers_df_display, use_container_width=True, height=400)
+if not drivers_df.empty:
+    st.dataframe(drivers_df, use_container_width=True, height=400)
 else:
     st.info("No driver data available.")
 
 with st.expander("Show All Driver Details"):
-    for _, row in drivers_df.iterrows():
-        st.write(
-            f"**Plate/Driver ID:** {row.get('Driver ID', '')}\n"
-            f"**Full Name:** {row.get('name', '')}\n"
-            f"**Short Name:** {row.get('id', '')}\n"
-            f"**Email:** {row.get('email', '')}\n"
-            "---"
-        )
+    for row in drivers_list:
+        st.write(f"**Plate:** {row.get('Plate')}")
+        st.write(f"**Driver ID:** {row.get('Driver ID')}")
+        st.write(f"**Name:** {row.get('Name')}")
+        st.write(f"**Email:** {row.get('Email')}")
+        st.markdown("---")
 
 # === Violations Section ===
 violations = get_violations()
@@ -77,12 +66,14 @@ if violations:
 else:
     st.info("No violations recorded yet.")
 
+# === Fine Payment Section ===
 st.subheader("💳 Pay Fine")
 plate = st.text_input("Enter Driver Plate Number to Pay Fine:")
 if st.button("Pay Fine"):
     mark_fine_paid(plate)
     st.success(f"Fine marked as paid for {plate}")
 
+# === Add New Driver Section ===
 st.sidebar.title("🚗 Add New Driver (Auto Violation)")
 new_plate = st.sidebar.text_input("Plate Number")
 driver_id = st.sidebar.text_input("Driver ID")
@@ -90,56 +81,21 @@ name = st.sidebar.text_input("Driver Name")
 email = st.sidebar.text_input("Email Address")
 
 if st.sidebar.button("Add Driver"):
-    # Defensive: Always load, repair, and save as a dict with Driver ID as key (for your DB logic)
-    try:
-        with open(DRIVER_FILE) as f:
-            loaded = json.load(f)
-    except Exception:
-        loaded = {}
-
-    if isinstance(loaded, list):
-        # Convert list to dict using Driver ID as key if possible
-        loaded_dict = {}
-        for item in loaded:
-            key = item.get("Driver ID", new_plate)
-            loaded_dict[key] = {
-                "id": item.get("id", ""),
-                "email": item.get("email", ""),
-                "name": item.get("name", "")
-            }
-        loaded = loaded_dict
-
-    if not isinstance(loaded, dict):
-        loaded = {}
-
-    loaded[new_plate] = {"id": driver_id, "email": email, "name": name}
+    drivers_data[new_plate] = {"id": driver_id, "email": email, "name": name}
 
     with open(DRIVER_FILE, "w") as f:
-        json.dump(loaded, f, indent=4)
+        json.dump(drivers_data, f, indent=4)
 
     add_owner(new_plate, driver_id, name, email)
     speed = random.randint(80, 420)
     locations = [
-        "Dummy Expressway 1",
-        "Main Avenue",
-        "Sunset Boulevard",
-        "Coastal Road",
-        "Greenbelt Parkway",
-        "Maple Street",
-        "Central Highway",
-        "Riverfront Drive",
-        "Mountain Pass",
-        "Lakeside Road",
-        "Industrial Zone Bypass",
-        "Airport Express",
-        "University Loop",
-        "Old Town Road",
-        "Harbor Street",
-        "Forest Trail",
-        "Metro Link",
-        "East End Boulevard",
-        "Westgate Drive",
-        "Downtown Connector"
+        "Dummy Expressway 1", "Main Avenue", "Sunset Boulevard",
+        "Coastal Road", "Greenbelt Parkway", "Maple Street",
+        "Central Highway", "Riverfront Drive", "Mountain Pass",
+        "Lakeside Road", "Industrial Zone Bypass", "Airport Express",
+        "University Loop", "Old Town Road", "Harbor Street",
+        "Forest Trail", "Metro Link", "East End Boulevard",
+        "Westgate Drive", "Downtown Connector"
     ]
     location = random.choice(locations)
     violation = {
@@ -153,11 +109,3 @@ if st.sidebar.button("Add Driver"):
     }
     add_violation(violation)
     st.sidebar.success(f"Driver {name} added with automatic violation.")
-
-def add_violation(data, fine=None):
-    # Set fine to a random amount between 2,000 and 10,000,000 if not provided
-    if fine is None:
-        fine = random.randint(2000, 10000000)
-    data["fine"] = fine
-    violations.append(data)
-    save_data()
