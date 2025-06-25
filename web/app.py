@@ -36,43 +36,43 @@ email = st.sidebar.text_input("Email Address")
 
 if st.sidebar.button("Add Driver"):
     # Prevent double insert by checking if plate already exists in owners
-    if any((owner['plate'] if isinstance(owner, dict) else owner) == new_plate for owner in owners):
+if any(owner['plate'] == new_plate for owner in owners):
     st.sidebar.warning(f"Driver with plate {new_plate} already exists.")
 else:
     add_owner(new_plate, driver_id, name, email)
-    speed = random.randint(80, 420)  # Adjust the range as needed
+    speed = random.randint(80, 420)
     locations = [
-            "Dummy Expressway 1",
-            "Main Avenue",
-            "Sunset Boulevard",
-            "Coastal Road",
-            "Greenbelt Parkway",
-            "Maple Street",
-            "Central Highway",
-            "Riverfront Drive",
-            "Mountain Pass",
-            "Lakeside Road",
-            "Industrial Zone Bypass",
-            "Airport Express",
-            "University Loop",
-            "Old Town Road",
-            "Harbor Street",
-            "Forest Trail",
-            "Metro Link",
-            "East End Boulevard",
-            "Westgate Drive",
-            "Downtown Connector"
-        ]
-        location = random.choice(locations)
-        violation = {
-            "plate": new_plate,
-            "owner": name,
-            "speed": speed,
-            "limit": 100,
-            "location": location,
-            "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            "paid": False
-        }
-        add_violation(violation)
-        st.sidebar.success(f"Driver {name} added with automatic violation.")
-        st.experimental_rerun()
+        "Dummy Expressway 1",
+        "Main Avenue",
+        "Sunset Boulevard",
+        "Coastal Road",
+        "Greenbelt Parkway",
+        "Maple Street",
+        "Central Highway",
+        "Riverfront Drive",
+        "Mountain Pass",
+        "Lakeside Road",
+        "Industrial Zone Bypass",
+        "Airport Express",
+        "University Loop",
+        "Old Town Road",
+        "Harbor Street",
+        "Forest Trail",
+        "Metro Link",
+        "East End Boulevard",
+        "Westgate Drive",
+        "Downtown Connector"
+    ]
+    location = random.choice(locations)
+    violation = {
+        "plate": new_plate,
+        "owner": name,
+        "speed": speed,
+        "limit": 100,
+        "location": location,
+        "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "paid": False
+    }
+    add_violation(violation)
+    st.sidebar.success(f"Driver {name} added with automatic violation.")
+    st.experimental_rerun()
