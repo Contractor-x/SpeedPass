@@ -35,7 +35,7 @@ name = st.sidebar.text_input("Driver Name")
 email = st.sidebar.text_input("Email Address")
 
 if st.sidebar.button("Add Driver"):
-    add_owner(new_plate, driver_id, name, email
+    add_owner(new_plate, driver_id, name, email)
     speed = random.randint(80, 420)
     locations = [
         "Dummy Expressway 1",
