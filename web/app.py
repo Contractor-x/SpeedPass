@@ -22,7 +22,7 @@ else:
     st.info("No violations recorded yet.")
 
 st.subheader("💳 Pay Fine")
-plate = st.text_input("Enter Driver ID to Pay Fine:")
+plate = st.text_input("Enter Driver Plate Number to Pay Fine:")
 if st.button("Pay Fine"):
     mark_fine_paid(plate)
     st.success(f"Fine marked as paid for {plate}")
