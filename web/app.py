@@ -36,10 +36,11 @@ email = st.sidebar.text_input("Email Address")
 
 if st.sidebar.button("Add Driver"):
     # Prevent double insert by checking if plate already exists in owners
-    if any(owner['plate'] == new_plate for owner in owners):
-        st.sidebar.warning(f"Driver with plate {new_plate} already exists.")
-    else:
-        add_owner(new_plate, driver_id, name, email)
+    if any((owner['plate'] if isinstance(owner, dict) else owner) == new_plate for owner in owners):
+    st.sidebar.warning(f"Driver with plate {new_plate} already exists.")
+else:
+    add_owner(new_plate, driver_id, name, email)
+    
         speed = random.randint(80, 420)  # Adjust the range as needed
         locations = [
             "Dummy Expressway 1",
