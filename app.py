@@ -15,7 +15,6 @@ if violations:
     st.subheader("📊 Violations by Plate")
     fig = px.histogram(df, x="plate", title="Number of Violations per Plate")
     st.plotly_chart(fig)
-
     st.subheader("📋 Violation Records")
     st.dataframe(df)
 else:
