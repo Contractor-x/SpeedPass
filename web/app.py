@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from database import get_violations, owners, mark_fine_paid, add_owner, add_violation
+from app.database import get_violations, owners, mark_fine_paid, add_owner, add_violation
 from datetime import datetime
 
 st.title("🚦 SpeedPass Lite - Traffic Monitoring Dashboard")
