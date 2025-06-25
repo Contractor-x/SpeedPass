@@ -12,7 +12,7 @@ if os.path.exists(DRIVER_FILE):
         if isinstance(owners, list):
             # Convert old list format to dict format automatically
             owners = {
-                item["plate"]: {
+            "plate"]: item["Driver ID'],
                     "id": item.get("driver_id", item.get("id", "")),
                     "email": item["email"],
                     "name": item["name"]
