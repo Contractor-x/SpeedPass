@@ -8,7 +8,11 @@ from datetime import datetime
 
 st.title("🚦 SpeedPass - Traffic Monitoring Dashboard")
 
-st.info(f"Total Registered Vehicles: {len(owners)}")
+# FIX: Count registered vehicles using drivers.json file directly
+with open("web/drivers.json") as f:
+    drivers = json.load(f)
+st.info(f"Total Registered Vehicles: {len(drivers)}")
+
 st.info(f"Total Violations Recorded: {len(get_violations())}")
 
 violations = get_violations()
