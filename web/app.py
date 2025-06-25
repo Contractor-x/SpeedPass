@@ -19,30 +19,30 @@ st.info(f"Total Violations Recorded: {len(get_violations())}")
 # === Registered Drivers Section ===
 st.subheader("👥 Registered Drivers")
 
-# Build DataFrame and display only the columns that exist
 drivers_df = pd.DataFrame(drivers)
-display_cols = [col for col in ["Driver ID", "name", "id", "email"] if col in drivers_df.columns]
+
+# Only use columns that exist
 display_names = {
     "Driver ID": "Plate/Driver ID",
     "name": "Full Name",
     "id": "Short Name",
     "email": "Email"
 }
-drivers_df_display = drivers_df[display_cols].rename(columns=display_names)
+existing_cols = [k for k in display_names if k in drivers_df.columns]
 
-st.dataframe(
-    drivers_df_display,
-    use_container_width=True,
-    height=400
-)
+if existing_cols:
+    drivers_df_display = drivers_df[existing_cols].rename(columns={k: v for k, v in display_names.items() if k in existing_cols})
+    st.dataframe(drivers_df_display, use_container_width=True, height=400)
+else:
+    st.info("No driver data available.")
 
 with st.expander("Show All Driver Details"):
     for _, row in drivers_df.iterrows():
         st.write(
-            f"**Plate/Driver ID:** {row.get('Driver ID', '')}\n\n"
-            f"**Full Name:** {row.get('name', '')}\n\n"
-            f"**Short Name:** {row.get('id', '')}\n\n"
-            f"**Email:** {row.get('email', '')}\n\n"
+            f"**Plate/Driver ID:** {row.get('Driver ID', '')}\n"
+            f"**Full Name:** {row.get('name', '')}\n"
+            f"**Short Name:** {row.get('id', '')}\n"
+            f"**Email:** {row.get('email', '')}\n"
             "---"
         )
 
@@ -109,7 +109,7 @@ if st.sidebar.button("Add Driver"):
     st.sidebar.success(f"Driver {name} added with automatic violation.")
 
 def add_violation(data, fine=None):
-    # Set fine to a random amount between 10,000 and 10,000,000 if not provided
+    # Set fine to a random amount between 2,000 and 10,000,000 if not provided
     if fine is None:
         fine = random.randint(2000, 10000000)
     data["fine"] = fine
