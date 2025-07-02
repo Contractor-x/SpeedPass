@@ -109,7 +109,7 @@ SpeedPass HQ
 ## 💡 How to Run (Dev Setup)
 
 ```bash
-git clone https://github.com/yourusername/speedpass-traffic-system.git
+git clone https://github.com/Contractor-x/speedpass-traffic-system.git
 cd speedpass-traffic-system
 pip install -r requirements.txt
 ```
