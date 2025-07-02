@@ -10,7 +10,7 @@ This is a beginner-friendly Python project simulating an intelligent traffic spe
 
 The system also simulates issuing fines to offenders and allows a basic web portal to display violation records and payment status (for demo purposes only).
 
-**⚡ Features:**
+**⚡ Top Features:**
 
 * Reads dummy car plate numbers.
 * Simulates over-speed detection.
