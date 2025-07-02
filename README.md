@@ -1,4 +1,4 @@
-# 🚦 SpeedPass Traffic System — Beginner Python Project
+# 🚦 SpeedPass Traffic System — A Beginner Python Project
 
 **License Plate Detection & Automated Speed Violation Alerts (Dummy Version)**
 
