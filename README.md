@@ -54,7 +54,6 @@ speedpass-traffic-system/
 
 * **Python 3.11+**
 * **Streamlit** for web interface.
-* **smtplib** for email alerts (Gmail).
 * **dotenv** for secure environment variables.
 
 ---
