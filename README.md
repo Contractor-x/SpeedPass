@@ -104,7 +104,7 @@ SpeedPass HQ
 
 ---
 
-## 💡 How to Run (Dev Setup)
+##  How to Run (Dev Setup)
 
 ```bash
 git clone https://github.com/Contractor-x/speedpass-traffic-system.git
