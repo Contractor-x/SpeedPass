@@ -34,7 +34,7 @@ speedpass-traffic-system/
 │   └── payment.py          # Simulate fine payment logic
 ├── web/
 │   ├── app.py              # Streamlit web portal
-├── .env                    # For storing API keys, credentials (excluded in .gitignore)
+#├── .env                    # For storing API keys, credentials (excluded in .gitignore)
 ├── requirements.txt
 ├── README.md
 └── LICENSE
