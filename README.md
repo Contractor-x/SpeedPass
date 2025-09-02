@@ -53,7 +53,6 @@ speedpass-traffic-system/
 ## Tech Stack
 
 * **Python 3.11+**
-* **Supabase** for dummy database (PostgreSQL-based).
 * **Streamlit** for web interface.
 * **smtplib** for email alerts (Gmail).
 * **dotenv** for secure environment variables.
