@@ -50,7 +50,7 @@ speedpass-traffic-system/
 
 ---
 
-## 💻 Tech Stack
+## Tech Stack
 
 * **Python 3.11+**
 * **Supabase** for dummy database (PostgreSQL-based).
