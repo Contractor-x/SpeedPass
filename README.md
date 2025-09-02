@@ -21,7 +21,7 @@ The system also simulates issuing fines to offenders and allows a basic web port
 
 ---
 
-## 🏗️ Project Structure
+## 🏗️l Project Structure
 
 ```
 speedpass-traffic-system/
