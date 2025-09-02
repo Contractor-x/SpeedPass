@@ -118,7 +118,7 @@ pip install -r requirements.txt
 
 ---
 
-##  Next Steps (For Beginners)
+##  Future improvements
 
 * Upgrade to real-time license plate reading (OpenCV, later).
 * Integrate real payment systems.
