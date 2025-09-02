@@ -4,7 +4,7 @@
 
 ---
 
-## Project Description
+## Basic Project Description
 
 This is a beginner-friendly Python project simulating an intelligent traffic speed monitoring system. It reads license plates (dummy data), checks for speed violations, and sends automated alerts to the HQ and law enforcement (via dummy Gmail SMTP).
 
