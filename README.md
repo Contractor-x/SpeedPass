@@ -127,7 +127,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🔒 Disclaimer
+##  Disclaimer
 
 **This is a beginner demo project. Not intended for real law enforcement use. Emails, databases, and payment logic are simulated.**
 
