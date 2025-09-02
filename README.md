@@ -42,7 +42,7 @@ speedpass-traffic-system/
 
 ---
 
-## Suggested Website (Streamlit)
+##  Streamlit
 
 * View list of recent violations (pulled from Supabase dummy DB).
 * Search for your plate number to check fines.
