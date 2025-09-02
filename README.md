@@ -58,7 +58,7 @@ speedpass-traffic-system/
 
 ---
 
-## 📬 Dummy Email Alert Example
+##  Dummy Email Alert Example
 
 ```
 Subject: SPEEDING VIOLATION ALERT — Vehicle Plate: ABC-1234
